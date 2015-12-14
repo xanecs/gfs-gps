@@ -46,8 +46,16 @@ Deshalb verwendet man in der Navigation ein System von Längengraden, Breitengra
 \paragraph{Breitengrade} Die Breitengrade verlaufen parallel zum Äquator der Erde. Sie reichen dabei von 90\degree{} Nord (oder nur 90\degree), der Nordpol über 0\degree, der Äquator bis 90\degree{} Süd (oder -90\degree), der Südpol. Ein Breitengrad ist also der Winkel zwischen Äquator, Erdmittelpunkt und dem zugehörigen Punkt auf der Erdoberfläche.
 
 \paragraph{Längengrade}
+Die Längengrade verlaufen senkrecht zu den Breitengraden. Ein Längengrad beschreibt also eine Linie von Nordpol zu Südpol. Der Nullmeridian (0\degree{}) wurde durch internationale Vereinbarungen auf das \emph{Royal Greenwich Observatory} in England gelegt. Von dort aus misst man von 180\degree{} West bis 180\degree{} Ost, um die Erde zu umspannen.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{img/latlong-01.png}
+\caption{Längen- und Breitengrade der Erde}
+\end{figure}
 
 \paragraph{Höhe}
+In der Navigation finden Höhenangaben eigentlich nur geringe Beachtung, denn Längen- und Breitengrade reichen aus, um einen Punkt \emph{auf} der Erd\emph{oberfläche} anzugeben. Trotzdem ist die Höhe notwendig, um mittels Längen- und Breitengraden einen Punkt im dreidimensionalen Raum eindeutig zu definieren. (Auch bei der Navigation in Flugzeugen ist sie natürlich wichtig.) Die Höhe wird in einer Längeneinheit über einem definierten Nullpunkt angegeben. Für die Höhenmessung gibt es allerdings viele verschiedene Systeme, und verschiedene Länder verwenden verschiedene Nullpunkte (z.B. „Normalhöhennull“ in Deutschland).
 
 \section{GPS-System}
 
@@ -61,7 +69,9 @@ Das GPS-System wird in drei Segmente eingeteilt. Diese sind:
 \cite{gpsgov_segments}
 
 \subsection{GPS-Satellit}
-Ein GPS-Satellit umkreist die Erde in einer Höhe von ca. \SI{26600}{\kilo\meter}.
+Die GPS-Satelliten stellen im GPS-System das dar, was früher die Sterne waren. Sie sind die Fixpunkte, deren Position bekannt ist.
+
+Ein GPS-Satellit umkreist die Erde in einer Höhe von ca. \SI{26600}{\kilo\meter}, gemessen zum Erdmittelpunkt.
 Mit dem 3. keplerschen Gesetz \eqref{eq:kepler3} kann man daraus die Umlaufzeit $T$ berechnen.
 
 \begin{equation}
@@ -73,29 +83,44 @@ T^2 = \frac{4 \pi^2}{G (M + m)} \cdot a^3
 Die Masse des Satelliten ist dabei im Vergleich zur Erdmasse vernachlässigbar.
 
 \begin{align*}
-a &= \SI{26600}{\kilo\meter} && \text{Abstand des Satelliten}\\
+a &= \SI{2.66e6}{\meter} && \text{Abstand des Satelliten}\\
 M &= \SI{5.97219e24}{\kilo\gram} && \text{Masse der Erde}\\
 G &= \SI{6.67408e-11}{\cubic\meter\per\kilo\gram\per\square\second} && \text{Gravitationskonstante} \\
 T^2 &= \frac{4 \pi^2}{G M} \cdot a^3 \\
-T &= \sqrt{\frac{4 \pi^2}{\SI{6.67408e-11}{\cubic\meter\per\kilo\gram\per\square\second} \cdot \SI{5.97219e24}{\kilo\gram}} \cdot (\SI{26600}{\kilo\meter})^3} \\
+T &= \sqrt{\frac{4 \pi^2}{\SI{6.67408e-11}{\cubic\meter\per\kilo\gram\per\square\second} \cdot \SI{5.97219e24}{\kilo\gram}} \cdot (\SI{2.66e6}{\meter})^3} \\
 T &= \SI{11.9932}{\hour} && \text{11 Stunden und 58 Minuten}
 \end{align*}
 
 Die Position der GPS-Satelliten ist also von der Erde aus gesehen nicht immer gleich, sondern sie Umkreisen die Erde zwei mal pro Tag.
 
+Das Herzstück jedes GPS-Satelliten ist eine sehr präzise Atomuhr. Sie ist mit den Atomuhren der anderen Satelliten synchronisiert und liefert die GPS-Zeit, die Grundlage für das GPS-System.
+
+Weitere Geräte sind für die Verarbeitung der Uhrzeit, das eigentliche Senden des GPS-Signals und die Kommunikation mit Bodenstationen zuständig.
+
+Die GPS-Satelliten werden über Solarzellen mit Strom versorgt. Deshalb müssen sie sehr energieeffizient sein. Die knappe Stromzufuhr ermöglicht außerdem keine große Sendeleistung für das GPS-Signal. Das Empfangen der Signale ist deshalb in der Praxis sehr kompliziert.
+
 \subsection{Konstellation}
+Für eine Positionsbestimmung müssen die Signale von mindestens 4 Satelliten empfangen werden (siehe ...). Zusätzliche Satelliten erhöhen die Genauigkeit. Damit dies an jedem Punkt auf der Erde gewährleistet ist, muss es genug GPS-Satelliten geben, die richtig um die Erde verteilt sind.
+
+Die Anordnung der Satelliten wird \emph{Konstellation} genannt. Die GPS-Konstellation besteht aus mindestens 24 Satelliten, die auf 6 kreisförmigen Ebenen mit je 4 Satelliten verteilt sind.
+
+Aktuell sind 30 funktionierende GPS-Satelliten im Weltall. Von den meisten Punkten der Erde aus kann man die Signale von 9 bis 11 Satelliten empfangen.
 
 \section{GPS-Signal}
+GPS-Satelliten senden Signale auf verschiedenen Frequenzen gleichzeitig. Diese Bänder werden $L_1$ bis $L_5$ genannt. Das für Zivile Empfänger wichtigste Signal, das C/A-Signal, wird über das $L_1$-Band mit der Frequenz
 \begin{equation}
 f_{L_1} = \SI{1.57542}{\giga\hertz} \nonumber
 \end{equation}
+übertragen.
+
+Untereinander Unterscheiden sich die Frequenzen, die von den GPS-Satelliten verwendet werden jedoch nicht. Das bedeutet, dass der GPS-Empfänger Signale von bis zu 12 Satelliten auf einer Frequenz unterscheiden muss.
 
 \subsection{CDMA}
 
-Um dennoch die Signale verschiedener Satelliten unterscheiden zu können (auch wenn sich ihre Signale überlagern, da von allen die gleiche Frequenz benutzt wird), wird eine Technik namens CDMA angewendet.
+Um das zu erreichen wird eine Technik namens CDMA angewendet.
 CDMA steht für \emph{Code Division Multiple Access}, es beschreibt ein Verfahren um mit Hilfe von Codes die gleichzeitige Übertragung mehrerer Signale auf einer Frequenz zu ermöglichen.
 
-Dazu benötigt jeder Sender auf der jeweiligen Frequenz einen eigenen Code, im Grunde genommen eine Folge von 1 und 0, die den Sender kennzeichnet. Im Fall von GPS ist dies ein pseudo-zufälliges Rauschen, welches sich nach 1023 chips wiederholt. (Ein chip ist ein Symbol des Codes, also eine 1 oder eine 0). Dieser Code wird C/A-Code genannt.
+Dazu benötigt jeder Sender auf der jeweiligen Frequenz einen eigenen Code, im Grunde genommen eine Folge von 1 und 0, die den Sender kennzeichnet. Im Fall von GPS ist dies ein pseudo-zufälliges Rauschen, welches sich nach 1023 chips wiederholt. Ein chip ist ein Symbol des Codes, also eine 1 oder eine 0. Man verwendet den Begriff chip statt Bit, da es sich beim Code nicht um wirkliche Informationen handelt. Dieser Code wird C/A-Code genannt.
 
 Der Code wird mit 1023 Mchip/s übertragen, was bedeutet, das er sich jeweils nach 1 Millisekunde wiederholt.
 Die Nutzdaten werden deutlich langsamer, mit 50 bit/s übertragen. Dann werden Code und Nutzdaten mit einem exklusiven Oder (XOR) verknüpft.
@@ -125,11 +150,11 @@ Dort kann man sehen, das das übertragene Signal genau dem Code entspricht, wenn
 
 \subsection{Satellitencodes}
 
-Der C/A Code jedes Satelliten wird mit einem Pseudozufallsgenerator erzeugt. Das bedeutet, dass die Ausgabe zufällig aussieht, das Gerät aber bei gleichen Anfangsbedingungen auch wieder die gleiche Zufallsfolge erzeugt. Jeder GPS-Empfänger kann also den C/A-Code selbst generieren. Über zwei Parameter im Algorithmus dieses Zufallsgenerators wird ausgewählt, für welchen Satelliten der Code erzeugt werden soll.
+Der C/A Code jedes Satelliten wird mit einem Pseudozufallsgenerator erzeugt. Das bedeutet, dass die Ausgabe zufällig aussieht, das Gerät aber bei gleichen Anfangsbedingungen auch wieder die gleiche Zufallsfolge erzeugt. Jeder GPS-Empfänger kann also den C/A-Code selbst generieren. Über zwei Parameter im Algorithmus dieses Zufallsgenerators wird ausgewählt, für welchen Satelliten der Code erzeugt werden soll. Die Codes sind so ausgewählt, dass das Unterscheiden der verschiedenen Satelliten für den Empfänger möglichst einfach ist (siehe ...).
 
 (Meine Implementierung des Zufallsgenerators in der Programmiersprache Python befindet sich im Anhang.)
 
-\subsubsection{Modulation}
+\subsection{Modulation}
 
 Modulation ist ein Verfahren, um Daten mittels Funkwellen zu „kodieren“.
 Wenn man nur eine Funkwelle (mit einer bestimmten Frequenz) sendet, werden so noch keine Daten übertragen. Dies geschieht erst, wenn bestimmte Eigenschaften dieser sogenannten Trägerwelle verändert werden.
@@ -148,6 +173,34 @@ An der Grafik kann man schon sehen, dass die Frequenz des Trägersignals deutlic
 Es gibt sehr viele verschiedene Verfahren zur Modulation. Sie unterscheiden sich z.B. in der Fehleranfälligkeit (manche Reagieren auf Störungen der Übertragung heftiger als andere). Es gibt kein \emph{bestes} Modulationsverfahren, es kommt immer auf den Einsatzzweck an. Mit manchen Verfahren kann man nur digitale Signale übertragen, mit manchen auch Analoge.
 
 Die Daten, die ein GPS-Satellit sendet werden auf eine Trägerwelle (mit der Frequenz des $L_1$-Bands) mit dem \emph{Binary Phase-Shift Keying}, kurz BPSK-Verfahren moduliert.
-Bei diesem Verfahren wird die sinusförmige Trägerwelle in ihrer Phase um $\frac{\lambda}{4}$ vor oder zurück verschoben, wenn in den Nutzdaten ein Wechsel von 1 zu 0 oder von 0 zu 1 vorliegt.
+Bei diesem Verfahren wird die sinusförmige Trägerwelle in ihrer Phase um $\frac{\lambda}{2}$ vor oder zurück verschoben, wenn in den Nutzdaten ein Wechsel von 1 zu 0 oder von 0 zu 1 vorliegt.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img/bpsk.jpg}
+\caption{Visualisierung des BPSK-Verfahrens\cite{evalidate_bpsk}}
+\label{fig:am}
+\end{figure}
+
+\subsection{Navigationsnachricht}
+Die Informationen, die über das GPS-Signal übertragen werden sind die so genannte \emph{Navigationsnachricht}. Die Navigationsnachricht enthält:
+\begin{itemize}
+\item Nummer der GPS-Woche (seit 22. August 1999)
+\item Zeit, die seit Beginn der Woche vergangen ist, in 6s-Schritten
+\item Abweichung der Satellitenzeit von der GPS-Systemzeit
+\item Informationen über die Umlaufbahn des eigenen und anderer Satelliten
+\item Korrekturdaten für Verzerrung durch die Ionosphäre
+\item Abweichung der GPS-Systemzeit von der UTC-Zeit (die GPS-Zeit kennt keine Schaltsekunden)
+\item Informationen über den Zustand der GPS-Satelliten
+\end{itemize}
+\cite{infotip_gps}
+
+\newpage
+\printbibliography
+\newpage
+
+\begin{appendix}
+\section{PRN-Generator}
+\end{appendix}
 
 \end{document}
