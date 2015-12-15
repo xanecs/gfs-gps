@@ -10,6 +10,8 @@
 \usepackage{float}
 \usepackage{microtype}
 \usepackage[per-mode = fraction]{siunitx}
+\DeclareSIUnit{\bit}{Bit}
+
 \usepackage[backend=biber]{biblatex}
 \addbibresource{./sources.bib}
 \author{Leon Bentrup}
@@ -188,12 +190,28 @@ Die Informationen, die über das GPS-Signal übertragen werden sind die so genan
 \item Nummer der GPS-Woche (seit 22. August 1999)
 \item Zeit, die seit Beginn der Woche vergangen ist, in 6s-Schritten
 \item Abweichung der Satellitenzeit von der GPS-Systemzeit
-\item Informationen über die Umlaufbahn des eigenen und anderer Satelliten
+\item Informationen über die Umlaufbahn des eigenen und anderer Satelliten (Ephemeriden)
 \item Korrekturdaten für Verzerrung durch die Ionosphäre
 \item Abweichung der GPS-Systemzeit von der UTC-Zeit (die GPS-Zeit kennt keine Schaltsekunden)
 \item Informationen über den Zustand der GPS-Satelliten
 \end{itemize}
 \cite{infotip_gps}
+
+Die Daten sind dabei in 25 Frames aufgeteilt, die wieder aus 5 Subframes bestehen. Ein Subframe fasst 10 Wörter mit je 30 Bits.
+
+Die Navigationsnachricht wird mit \SI{50}{\bit\per\second} übertragen.
+Ein Subframe benötigt also \SI{6}{\second} für die Übertragung, ein Frame \SI{30}{\second}. Bis die vollständige Navigationsnachricht übertragen ist, vergehen \SI{12.5}{\minute}.
+
+Das Erste Wort jedes Subframes ist das Telemetrie-Wort (TLM). Es enthält das Präambel, eine definierte Reihenfolge von 1 und 0, die ein GPS-Empfänger benutzt, um den Beginn des Subframes zu erkennen.  Darauf folgt das Hand Over Word (HOW), dass die Zeit seit Beginn der Woche zählt. Sie wird in \SI{6}{\second}-Schritten gezählt, der Länge eines Subframes. Die verbleibenden 8 Wörter eines Subframes sind dann für die eigentliche Datenübertragung.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{img/navigation_message.png}
+\caption{Die GPS-Navigationsnachricht\cite{infotip_gps}}
+\label{fig:am}
+\end{figure}
+
+\section{GPS-Empfänger}
 
 \newpage
 \printbibliography
