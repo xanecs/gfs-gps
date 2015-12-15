@@ -181,7 +181,7 @@ Bei diesem Verfahren wird die sinusförmige Trägerwelle in ihrer Phase um $\fra
 \centering
 \includegraphics[width=0.7\textwidth]{img/bpsk.jpg}
 \caption{Visualisierung des BPSK-Verfahrens\cite{evalidate_bpsk}}
-\label{fig:am}
+\label{fig:bpsk}
 \end{figure}
 
 \subsection{Navigationsnachricht}
@@ -208,10 +208,74 @@ Das Erste Wort jedes Subframes ist das Telemetrie-Wort (TLM). Es enthält das Pr
 \centering
 \includegraphics[width=\textwidth]{img/navigation_message.png}
 \caption{Die GPS-Navigationsnachricht\cite{infotip_gps}}
-\label{fig:am}
+\label{fig:nm}
 \end{figure}
 
-\section{GPS-Empfänger}
+\section{GPS-Fix}
+Die Aufgabe, die ein GPS-Empfänger bewältigen muss ist keine Leichte.
+Denn durch die sehr kleine Sendeleistung der GPS-Satelliten und deren große Entfernung ist das GPS-Signal auf der Erde so schwach, dass es im Hintergrundrauschen „untergeht“. Zusätzlich dazu überlagern sich auch noch die Signale mehrerer Satelliten. Dementsprechend ist das Aufbereiten und Auswerten des GPS-Signals sehr kompliziert. Deshalb wird der Prozess im Nachfolgenden etwas vereinfacht dargestellt.
+
+\subsection{Autokorrelation}
+Zunächst muss der GPS-Empfänger die Zeit feststellen, zu der ein von ihm empfangenes Signal gesendet wurde. Er beginnt damit, für einen Satelliten den C/A-Code zu generieren. Diesen Code vergleicht der Empfänger dann mit dem empfangenen Signal. Der Algorithmus, der dazu verwendet wird heißt Autokorrelation.
+
+Dazu werden die empfangenen Daten und der interne C/A-Code mit einem UND verknüpft. Danach wird die Summe aus den so entstandenen Werten gebildet. Dieser Wert muss maximiert werden. Dazu verschiebt der GPS-Empfänger den generierten C/A-Code. Außerdem muss noch die Frequenz des Empfängers um $\pm \SI{6}{\kilo\hertz}$ angepasst werden. Denn die Satelliten bewegen sich zum Empfänger hin, oder von ihm weg. Wegen des Doppler-Effektes verändert sich dann die Frequenz der GPS-Signale aus Sicht des Empfängers. Findet sich auch nach ausprobieren dieser Verschiebungen keine Kombination, bei der die Autokorrelation einen hohen Wert ergibt, handelt es sich bei dem vom GPS-Empfänger generierten C/A-Code um einen Code, der von keinem Satelliten in „Sichtweite“ verwendet wird.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{img/ac_9.png}
+\caption{Autokorrelation bei verschobenem Signal\cite{kowoma_signalv}}
+\includegraphics[width=0.7\textwidth]{img/ac_25.png}
+\caption{Autokorrelation bei deckendem Signal\cite{kowoma_signalv}}
+\label{fig:ac}
+\end{figure}
+
+Durch diese Korrelation ist es zum einen möglich, die Signale verschiedener Satelliten zu unterscheiden, obwohl sich diese überlagern. Außerdem kann so die GPS-Systemzeit bestimmt werden:
+
+Wenn der Empfänger das Signal korreliert hat, kennt er die GPS-Zeit mit $$t_1 = n\cdot\SI{1}{\milli\second} + c; c<\SI{1}{\milli\second}$$ wobei ihm c jetzt bekannt ist, n jedoch nicht. Das folgt daraus, dass sich der C/A-Code jede Millisekunde wiederholt.
+
+\subsection{Sendezeitbestimmung}
+Als nächstes Sucht der GPS-Empfänger nach einem Bitwechsel in der GPS-Nachricht. Hat er diesen gefunden und zählt die Anzahl der kompletten C/A-Codes, die dabei vergangen sind, kann der GPS-Empfänger die GPS-Zeit dann mit der Genauigkeit  $$t_1 = n\cdot\SI{20}{\milli\second} + c; c<\SI{20}{\milli\second}$$ bestimmen.
+
+Als nächstes muss nach einem Präambel in der Navigationsnachricht gesucht werden. Das Präambel ist die Bitfolge \texttt{10001011}. Hat er ihn gefunden muss er dem Subframe, in dem dieses Präambel enthalten ist die ID entnehmen. Diese ID zeigt, um das wievielte Subframe im Frame es sich handelt. Durch zurückrechnen lässt sich $t_1$ nun mit $$t_1 = n\cdot\SI{6}{\second} + c; c<\SI{6}{\second}$$ bestimmen.
+
+Danach kann aus dem Hand Over Word des Subframes die Zahl der \SI{6}{\second}-Schritte seit Beginn der GPS-Woche gelesen werden. $$t_1 = n\cdot\SI{7}{\day} + c; c<\SI{7}{\day}$$
+
+Schließlich muss der GPS-Empfänger auf das erste Subframe eines Frames warten, dort steht die aktuelle GPS-Woche. Damit ist die GPS-Systemzeit eindeutig bestimmt.
+
+Dieser Vorgang muss mit allen empfangenen Signalen durchgeführt werden.
+
+\subsection{Empfangen der Bahndaten}
+Nach der Autokorrelation können alle Signale empfangen werden. Der GPS-Empfänger kann dann die Nutzdaten herunterladen. In diesen Nutzdaten sind die Informationen enthalten, die der GPS-Empfänger braucht, um die aktuelle Position des GPS-Satelliten zu bestimmen. Der GPS-Empfänger bestimmt dann die Positionen der Satelliten, von denen er Signale empfängt.
+
+\subsection{Positionsbestimmung}
+Dann hat der GPS-Empfänger alle Informationen zusammen, um die eigene Position zu bestimmen. Insgesamt benötigt der GPS-Empfänger die Signale von 4 Satelliten, um eine Positionsbestimmung durchzuführen.
+
+\begin{itemize}
+\item Die Position des GPS-Satelliten. $x_i,y_i,z_i$
+\item Die Sendezeit des Satelliten. $t_i$
+\end{itemize}
+
+Dann kann er für jeden GPS-Satelliten eine Gleichung wie \eqref{eq:gps} aufstellen.
+\begin{equation}
+\label{eq:gps}
+(x_i - x_0)^2 + (y_i - y_0)^2 + (z_i - z_0)^2 = (c*(t_0-t_i))^2
+\end{equation}
+Dabei ist $x_0,y_0,z_0$ die Position des GPS-Empfängers. $t_0$ ist die aktuelle GPS-Systemzeit, zu dem Zeitpunkt zu dem die Signale Empfangen werden. Die Differenz $t_0-t_i$ ist also die Laufzeit des Signals von Satellit zum Empfänger. Mit der Lichtgeschwindigkeit $c$ ergibt sich dann die Entfernung des Empfängers zum Satelliten $c*(t_0-t_i)$. Diese Entfernung ist gleich dem Betrag des Vektors von Satellit zu Empfänger, wie auf der linken Seite er Gleichung steht.
+
+Für die Satelliten 1-4 ergibt sich dann das Gleichungssystem
+\begin{align*}
+(x_1 - x_0)^2 + (y_1 - y_0)^2 + (z_1 - z_0)^2 = (c\cdot(t_0-t_1))^2 \\
+(x_2 - x_0)^2 + (y_2 - y_0)^2 + (z_2 - z_0)^2 = (c\cdot(t_0-t_2))^2 \\
+(x_3 - x_0)^2 + (y_3 - y_0)^2 + (z_3 - z_0)^2 = (c\cdot(t_0-t_3))^2 \\
+(x_4 - x_0)^2 + (y_4 - y_0)^2 + (z_4 - z_0)^2 = (c\cdot(t_0-t_4))^2 \\
+\end{align*}
+Dieses Gleichungssystem mit 4 Gleichungen und 4 Unbekannten kann der GPS-Empfänger dann nach $x_0,y_0,z_0,t_0$ lösen. Er erhält die eigenen Position und zusätzlich die sehr exakte GPS-Systemzeit $t_0$, die mit Korrekturdaten aus der Navigationsnachricht in die aktuelle Uhrzeit umgerechnet werden kann.
+
+Diese Berechnungen werden im GPS-Empfänger normalerweise in einem kartesischen Koordinatensystem durchgeführt (3 Achsen, die orthogonal zueinander Stehen). Die Ermittelte Position muss also anschließend noch in das Lägen- und Breitengradsystem umgerechnet werden.
+
+In der Praxis kann dieses Gleichungssystem natürlich nicht einfach „gelöst“ werden. Durch Ungenauigkeiten gibt es keine exakte Lösung. Stattdessen muss der GPS-Empfänger nach der bestmöglichen Lösung suchen.
+
+Außerdem würden hier noch Korrekturen für Verzerrungen durch die Erdathmosphäre durchgeführt werden. Daten dazu sind Ebenfalls in der Navigationsnachricht enthalten.
 
 \newpage
 \printbibliography
