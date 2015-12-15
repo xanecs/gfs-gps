@@ -211,6 +211,23 @@ Das Erste Wort jedes Subframes ist das Telemetrie-Wort (TLM). Es enthält das Pr
 \label{fig:nm}
 \end{figure}
 
+\section{GPS-Empfänger}
+GPS-Empfänger gibt es in verschiedenen Modellen. Von kleinsten Modulen, die in Smartphones eingebaut werden, bis zu großen professionellen GPS-Empfängern für die Vermessung von Grundstücken.
+
+Ein GPS-Empfänger benötigt mindestens folgende Komponenten:
+
+\paragraph{Antenne}
+In GPS-Empfängern kommen aktive Antennen zum Einsatz, die direkt an der Antenne einen Verstärker angebracht haben. Das verringert Störeinflüsse, die sonst über die Verbindung zwischen Antenne und Verstärker entstehen würden. Außerdem enthalten GPS-Empfänger noch Elektronik zum Filtern, Verstärken und demodulieren des empfangenen Signals.
+
+\paragraph{DSP-Chip}
+Der DSP-Chip übernimmt die zeitkritischen und anspruchsvollen Aufgaben, die zum bestimmen der Laufzeiten zu den Satelliten und daraus der Position des Empfängers notwendig sind.
+
+\paragraph{Uhr}
+Ein GPS-Empfänger benötigt eine genaue Uhr, z.B. eine Quarz-Uhr. Sie ist zum einen der Zeitgeber für das Auswerten des GPS-Signals und sie behält die Zeit, wenn der GPS-Empfänger ausgeschaltet ist, was später einen Warmstart ermöglicht.
+
+\paragraph{Mikrocontroller}
+Weniger anspruchsvolle Berechnungen, wie z.B. das Umrechnen von Koordinaten in ein anderes Format oder die Kommunikation mit internem Speicher, Display und angeschlossenen Geräten übernimmt ein Mikrocontroller.
+
 \section{GPS-Fix}
 Die Aufgabe, die ein GPS-Empfänger bewältigen muss ist keine Leichte.
 Denn durch die sehr kleine Sendeleistung der GPS-Satelliten und deren große Entfernung ist das GPS-Signal auf der Erde so schwach, dass es im Hintergrundrauschen „untergeht“. Zusätzlich dazu überlagern sich auch noch die Signale mehrerer Satelliten. Dementsprechend ist das Aufbereiten und Auswerten des GPS-Signals sehr kompliziert. Deshalb wird der Prozess im Nachfolgenden etwas vereinfacht dargestellt.
@@ -271,11 +288,18 @@ Für die Satelliten 1-4 ergibt sich dann das Gleichungssystem
 \end{align*}
 Dieses Gleichungssystem mit 4 Gleichungen und 4 Unbekannten kann der GPS-Empfänger dann nach $x_0,y_0,z_0,t_0$ lösen. Er erhält die eigenen Position und zusätzlich die sehr exakte GPS-Systemzeit $t_0$, die mit Korrekturdaten aus der Navigationsnachricht in die aktuelle Uhrzeit umgerechnet werden kann.
 
-Diese Berechnungen werden im GPS-Empfänger normalerweise in einem kartesischen Koordinatensystem durchgeführt (3 Achsen, die orthogonal zueinander Stehen). Die Ermittelte Position muss also anschließend noch in das Lägen- und Breitengradsystem umgerechnet werden.
+Diese Berechnungen werden im GPS-Empfänger normalerweise in einem kartesischen Koordinatensystem durchgeführt (3 Achsen, die orthogonal zueinander Stehen). Die Ermittelte Position muss also anschließend noch in das Längen- und Breitengradsystem umgerechnet werden.
 
 In der Praxis kann dieses Gleichungssystem natürlich nicht einfach „gelöst“ werden. Durch Ungenauigkeiten gibt es keine exakte Lösung. Stattdessen muss der GPS-Empfänger nach der bestmöglichen Lösung suchen.
 
 Außerdem würden hier noch Korrekturen für Verzerrungen durch die Erdathmosphäre durchgeführt werden. Daten dazu sind Ebenfalls in der Navigationsnachricht enthalten.
+
+\section{Kalt-, Warm- und Heißstart}
+Der gesamte beschriebene Vorgang wird als ein Kaltstart bezeichnet. Er muss durchgeführt werden, wenn der GPS-Empfänger gar keine Informationen über die GPS-Satelliten hat, oder diese veraltet sind. Der Kaltstart kann je nach zahl der Verfügbaren GPS-Satelliten und deren Signalstärke mehrere Minuten dauern. Bei früheren GPS-Empfängern bis zu 20 Minuten.
+
+Deshalb speichert ein GPS-Empfänger Informationen wie die letzte bekannte Position, und die Bahndaten der Satelliten, und behält diese nach dem Ausschalten. Hat sich der GPS-Empfänger seit dem Ausschalten nicht viel bewegt und die gespeicherten Informationen sind noch aktuell, kann ein Warmstart durchgeführt werden. Dann weiß der GPS-Empfänger schon im Voraus, von welchen Satelliten er Signale empfangen kann, und kennt deren ungefähre Bahndaten. Das spart bei der Autokorrelation Zeit, da weniger C/A-Codes ausprobiert werden müssen. Ein Warmstart dauert maximal 45 Sekunden.
+
+Sind noch genaue Bahninformationen vorhanden kann ein Heißstart durchgeführt werden. Dies ist dann der Fall, wenn der Empfang kurz abgerissen ist. Wenn der GPS-Empfänger sich nicht bewegt hat, sind die Daten bis zu 6 Stunden lang aktuell genug für einen Heißstart. Das bestimmen der Position dauert dann nur wenige Sekunden.
 
 \newpage
 \printbibliography
