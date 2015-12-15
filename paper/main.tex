@@ -279,9 +279,9 @@ Dann hat der GPS-Empfänger alle Informationen zusammen, um die eigene Position 
 Dann kann er für jeden GPS-Satelliten eine Gleichung wie \eqref{eq:gps} aufstellen.
 \begin{equation}
 \label{eq:gps}
-(x_i - x_0)^2 + (y_i - y_0)^2 + (z_i - z_0)^2 = (c*(t_0-t_i))^2
+(x_i - x_0)^2 + (y_i - y_0)^2 + (z_i - z_0)^2 = (c\cdot(t_0-t_i))^2
 \end{equation}
-Dabei ist $x_0,y_0,z_0$ die Position des GPS-Empfängers. $t_0$ ist die aktuelle GPS-Systemzeit, zu dem Zeitpunkt zu dem die Signale Empfangen werden. Die Differenz $t_0-t_i$ ist also die Laufzeit des Signals von Satellit zum Empfänger. Mit der Lichtgeschwindigkeit $c$ ergibt sich dann die Entfernung des Empfängers zum Satelliten $c\cdot (t_0-t_i)$. Diese Entfernung ist gleich dem Betrag des Vektors vom Satellit zum Empfänger, wie auf der linken Seite der Gleichung steht.
+Dabei ist $x_0,y_0,z_0$ die Position des GPS-Empfängers. $t_0$ ist die aktuelle GPS-Systemzeit, zu dem Zeitpunkt zu dem die Signale empfangen werden. Die Differenz $t_0-t_i$ ist also die Laufzeit des Signals von Satellit zum Empfänger. Mit der Lichtgeschwindigkeit $c$ ergibt sich dann die Entfernung des Empfängers zum Satelliten $c\cdot (t_0-t_i)$. Diese Entfernung ist gleich dem Betrag des Vektors vom Satellit zum Empfänger, wie auf der linken Seite der Gleichung steht.
 
 Für die Satelliten 1-4 ergibt sich dann das Gleichungssystem
 \begin{align*}
