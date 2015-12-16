@@ -300,19 +300,61 @@ In der Praxis kann dieses Gleichungssystem natürlich nicht einfach „gelöst�
 
 Außerdem würden hiery noch Korrekturen für Verzerrungen durch die Erdathmosphäre durchgeführt werden. Die dafür benötigten Daten sind ebenfalls in der Navigationsnachricht enthalten.
 
-\section{Kalt-, Warm- und Heißstart}
+\subsection{Kalt-, Warm- und Heißstart}
 Der gesamte beschriebene Vorgang wird als ein Kaltstart bezeichnet. Er muss durchgeführt werden, wenn der GPS-Empfänger gar keine Informationen über die GPS-Satelliten hat, oder diese veraltet sind. Der Kaltstart kann je nach Zahl der verfügbaren GPS-Satelliten und deren Signalstärke mehrere Minuten dauern. Bei älteren GPS-Empfängern bis zu 20 Minuten.
 
 Deshalb speichert ein GPS-Empfänger Informationen wie die letzte bekannte Position, und die Bahndaten der Satelliten, und behält diese nach dem Ausschalten. Hat sich der GPS-Empfänger seit dem Ausschalten nicht viel bewegt und die gespeicherten Informationen sind noch aktuell, kann ein Warmstart durchgeführt werden. Dann weiß der GPS-Empfänger schon im Voraus, von welchen Satelliten er Signale empfangen kann, und kennt deren ungefähre Bahndaten. Das spart bei der Autokorrelation Zeit, da weniger C/A-Codes ausprobiert werden müssen. Ein Warmstart dauert maximal 45 Sekunden.
 
 Sind noch genaue Bahninformationen vorhanden kann ein Heißstart durchgeführt werden. Dies ist dann der Fall, wenn der Empfang kurz abgerissen ist. Wenn der GPS-Empfänger sich nicht bewegt hat, sind die Daten bis zu 6 Stunden lang aktuell genug für einen Heißstart. Das Bestimmen der Position dauert dann nur wenige Sekunden.
 
+\section{Genauigkeit von GPS}
+\label{sec:accuracy}
+
+Bevor die künstliche Verschlechterung des zivilen GPS-Signals, die \emph{Selective Availability} (S/A), abgeschaltet wurde (siehe \ref{sec:history}), konnte man mit zivilen GPS-Empfängern nur Genauigkeiten im \SI{100}{\meter}-Bereich erreichen. Nach der Abschaltung von S/A im Mai 2000, waren alle GPS-Empfänger in der Lage, die Position auf etwa \SI{10}{m} genau zu ermitteln.
+
+Der größte noch verbleibende Störfaktor ist die Ionosphäre der Erde. Die Ionosphäre enthält viele Moleküle, die durch UV- und Röntgenstrahlung der Sonne ionisiert wurden. Diese Ionen beeinträchtigen die Ausbreitungsgeschwindigkeit von Licht in der Ionosphäre. Licht, und damit auch die Funksignale der GPS-Satelliten bewegen sich dort mit einer geringeren Geschwindigkeit als der Lichtgeschwindigkeit im Vakuum $c$.
+
+Licht ist in jedem Medium langsamer als im Vakuum. Die Beeinträchtigungen durch andere Schichten der Erdathmosphäre können allerdings mit mathematischen Modellen berechnet werden. Der GPS-Empfänger berücksichtigt dies bei der Positionsbestimmung und korrigiert die veränderte Laufzeit der GPS-Signale.
+
+Bei der Ionosphäre gibt es allerdings kein brauchbares Modell um die Verlangsamung der Signale zu beschreiben. Sie ist von der Position des Empfängers, und der der Satelliten, von der Tageszeit und von der Sonnenaktivität abhängig.
+
+Militärische GPS-Empfänger und moderne zivile GPS-Empfänger können durch das hinzunehmen eines weiteren Bandes (GPS-Signal auf einer anderen Frequenz) die Ungenauigkeiten durch die Ionosphäre bis zu einem gewissen Grad ausgleichen. Denn höhere Frequenzen werden stärker beeinflusst als niedrigere Frequenzen. Aus den Unterschieden zwischen den beiden Frequenzen kann der GPS-Empfänger ungefähr auf die Verzerrung durch die Ionosphäre schließen und sie dann korrigieren. Damit Genauigkeiten von \SI{1}{\meter} bis \SI{30}{\centi\meter} möglich.
+
+\section{Geschichte des GPS}
+\label{sec:history}
+% TODO: Review this section
+Als 1957 die Sowjetunion den weltweit ersten Satelliten Sputnik ins Weltall brachten, entwickelten Forscher am MIT einer Methode, um Sputnik mit Hilfe des Doppler-Effekts Orten zu können. Dieses Verfahren inspirierte die Erfindung eines satellitengestützten Positionierungssystems\footnote{Die technische Umsetzung des GPS hat allerdings nichts mit dem Sputnik-Experiment zu tun.}, denn, wenn man einen Satelliten von der Erde aus Orten konnte, dann musste das Umgekehrte auch möglich sein.\cite{tomtom_history}
+
+Daraufhin entwickelte die US-Navy ein System mit 6, später 10 Satelliten, mit dem Ziel die Position eines U-Bootes zu bestimmen. Da die Satelliten aber nicht ständig sendeten, dauerte es mehrere Stunden, um dies einmal zu tun.\cite{techhive_history}
+
+1963 legte die Forschungsgruppe Aeorospace Corporation in mehreren Studien die theorethischen Grundlagen für das GPS-System. Das US-Militär forschte weiter an diesem System und brachte 1974 den ersten Satelliten des NAVSTAR genannten Systems in seine Umlaufbahn.
+
+\section{Control Segment}
+\label{sec:control}
+
+Die GPS-Satelliten werden ständig überwacht, um eine einwandfreie Funktion des GPS-Systems zu gewährleisten. Dies geschieht durch das Control Segment, ein Netzwerk aus Bodenstationen, die auf der ganzen Welt verteilt sind.
+
+Über das Control-Segment werden die Bahndaten, die in der Navigationsnachricht enthalten sind aktuell gehalten. Kleine Abweichungen in der Position des GPS-Satelliten von der „idealen“ Umlaufbahn können dann korrigiert werden.
+
+Außerdem werden die Atomuhren der Satelliten ständig überwacht und synchronisiert. Die Uhren driften zwischen den Satelliten leicht außeinander, zum Einen wegen Ungenauigkeiten der Atomuhr selbst, zum Anderen durch relativistische Effekte.
+Da sich die Satelliten mit \SI{14000}{\kilo\meter\per\hour} bewegen, laufen die Uhren der GPS-Satelliten nach Einsteins Spezieller Relativitätstheorie von der Erde aus betrachtet langsamer. 
+
+Ein weiterer relativistischer Effekt, der die GPS-Uhren beeinträchtigt wird in der Allgemeinen Relativitätstheorie beschrieben: Da die Satelliten durch ihre Höhe eine etwas geringere Schwerkraft erfahren, laufen ihre Uhren wieder schneller.
+
+Kombiniert sorgen die beiden relativistischen Effekte dafür, dass die Uhren der GPS-Satelliten etwa \SI{38}{\micro\second} pro Tag schneller laufen als die Uhren auf der Erde. Würde der Fehler nicht korrigiert werden, entsprächen \SI{38}{\micro\second} einer Ungenauigkeit von \SI{10}{\kilo\meter} bei der Positionsbestimmung. \cite{ohio_gpsrelativity}
+
+\section{Vergleichbare Systeme}
+GPS ist nicht das einzige Globale Satellitennavigationssystem. Parallel zur Entwicklung des GPS in Amerika wurde von Russland GLONASS entwickelt.
+
+GLONASS funktioniert im Grunde genommen genau so wie GPS. Im Gegensatz zum GPS verwendet das Russische System aber nicht das CDMA-Verfahren, um Satelliten zu Unterscheiden. Stattdessen sendet jeder Satellit auf zwei eigenen Frequenzen. (Satelliten, die einander gegenüber liegen verwenden die gleichen Frequenzen, sie können von einem Punkt auf der Erde nie gleichzeitig empfangen werden).
+
+
+
 \newpage
 \printbibliography
-\newpage
 
-\begin{appendix}
-\section{PRN-Generator}
-\end{appendix}
-
+\vspace{2cm}
+Hiermit erkläre ich, dass ich die vorliegende Arbeit selbstständig und ohne fremde Hilfe verfasst und keine anderen Hilfsmittel als angegeben verwendet habe. Insbesondere versichere ich, dass ich alle wörtlichen und sinngemäßen Übernahmen aus anderen Werken als solche kenntlich gemacht habe.
+\vspace{2cm}
+\hrule
 \end{document}
