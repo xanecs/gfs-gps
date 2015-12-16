@@ -49,7 +49,7 @@ Deshalb verwendet man in der Navigation ein System von Längengraden, Breitengra
 \paragraph{Breitengrade} Die Breitengrade verlaufen parallel zum Äquator der Erde. Sie reichen dabei von 90\degree{} Nord (oder nur 90\degree), der Nordpol über 0\degree, der Äquator bis 90\degree{} Süd (oder -90\degree), der Südpol. Ein Breitengrad ist also der Winkel zwischen Äquator, Erdmittelpunkt und dem zugehörigen Punkt auf der Erdoberfläche.
 
 \paragraph{Längengrade}
-Die Längengrade verlaufen senkrecht zu den Breitengraden. Ein Längengrad beschreibt also eine Linie von Nordpol zu Südpol. Der Nullmeridian (0\degree{}) wurde durch internationale Vereinbarungen auf das \emph{Royal Greenwich Observatory} in England gelegt. Von dort aus misst man von 180\degree{} West bis 180\degree{} Ost, um die Erde zu umspannen.
+Die Längengrade verlaufen senkrecht zu den Breitengraden. Ein Längengrad beschreibt also eine Linie vom Nordpol zum Südpol. Der Nullmeridian (0\degree{}) wurde durch internationale Vereinbarungen auf das \emph{Royal Greenwich Observatory} in England gelegt. Von dort aus misst man von 180\degree{} West bis 180\degree{} Ost, um die Erde zu umspannen.
 
 \begin{figure}
 \centering
@@ -65,7 +65,7 @@ In der Navigation finden Höhenangaben eigentlich nur geringe Beachtung, denn L�
 \subsection{Segmente}
 Das GPS-System wird in drei Segmente eingeteilt. Diese sind:
 \begin{itemize}
-\item Das Space Sagment, die Satelliten im Weltall
+\item Das Space Segment, die Satelliten im Weltall
 \item Das Control Segment, mehrere weltweit verteilte Bodenstationen zur Überwachung und Steuerung der GPS-Satelliten
 \item Das User Segment, die Nutzer des GPS-Systems, also die GPS-Empfänger
 \end{itemize}
@@ -75,7 +75,7 @@ Das GPS-System wird in drei Segmente eingeteilt. Diese sind:
 Die GPS-Satelliten stellen im GPS-System das dar, was früher die Sterne waren. Sie sind die Fixpunkte, deren Position bekannt ist.
 
 Ein GPS-Satellit umkreist die Erde in einer Höhe von ca. \SI{26600}{\kilo\meter}, gemessen zum Erdmittelpunkt.
-Mit dem 3. keplerschen Gesetz \eqref{eq:kepler3} kann man daraus die Umlaufzeit $T$ berechnen.
+Mit dem 3. Keplerschen Gesetz \eqref{eq:kepler3} kann man daraus die Umlaufzeit $T$ berechnen.
 
 \begin{equation}
 \label{eq:kepler3}
@@ -83,7 +83,7 @@ T^2 = \frac{4 \pi^2}{G (M + m)} \cdot a^3
 \end{equation}
 \cite{wiki_kepler}
 
-Die Masse des Satelliten ist dabei im Vergleich zur Erdmasse vernachlässigbar.
+Die Masse des Satelliten $m$ ist dabei im Vergleich zur Erdmasse vernachlässigbar.
 
 \begin{align*}
 a &= \SI{2.66e6}{\meter} && \text{Abstand des Satelliten}\\
@@ -100,10 +100,10 @@ Das Herzstück jedes GPS-Satelliten ist eine sehr präzise Atomuhr. Sie ist mit 
 
 Weitere Geräte sind für die Verarbeitung der Uhrzeit, das eigentliche Senden des GPS-Signals und die Kommunikation mit Bodenstationen zuständig.
 
-Die GPS-Satelliten werden über Solarzellen mit Strom versorgt. Deshalb müssen sie sehr energieeffizient sein. Die knappe Stromzufuhr ermöglicht außerdem keine große Sendeleistung für das GPS-Signal. Das Empfangen der Signale ist deshalb in der Praxis sehr kompliziert.
+Die GPS-Satelliten werden über Solarzellen mit Strom versorgt. Deshalb müssen sie sehr energieeffizient sein. Die knappe Stromzufuhr ermöglicht außerdem keine große Sendeleistung für das GPS-Signal. Das Empfangen der Signale ist deshalb in der Praxis sehr schwierig. In Gebäuden oder unter Wasser ist es meist gar nicht möglich.
 
 \subsection{Konstellation}
-Für eine Positionsbestimmung müssen die Signale von mindestens 4 Satelliten empfangen werden (siehe ...). Zusätzliche Satelliten erhöhen die Genauigkeit. Damit dies an jedem Punkt auf der Erde gewährleistet ist, muss es genug GPS-Satelliten geben, die richtig um die Erde verteilt sind.
+Für eine Positionsbestimmung müssen die Signale von mindestens 4 Satelliten empfangen werden (siehe \ref{sec:positioning}). Zusätzliche Satelliten erhöhen die Genauigkeit. Damit dies an jedem Punkt auf der Erde gewährleistet ist, muss es genug GPS-Satelliten geben, die richtig um die Erde verteilt sind.
 
 Die Anordnung der Satelliten wird \emph{Konstellation} genannt. Die GPS-Konstellation besteht aus mindestens 24 Satelliten, die auf 6 kreisförmigen Ebenen mit je 4 Satelliten verteilt sind.
 
@@ -116,7 +116,7 @@ f_{L_1} = \SI{1.57542}{\giga\hertz} \nonumber
 \end{equation}
 übertragen.
 
-Untereinander Unterscheiden sich die Frequenzen, die von den GPS-Satelliten verwendet werden jedoch nicht. Das bedeutet, dass der GPS-Empfänger Signale von bis zu 12 Satelliten auf einer Frequenz unterscheiden muss.
+Untereinander unterscheiden sich die Frequenzen, die von den GPS-Satelliten verwendet werden jedoch nicht. Das bedeutet, dass der GPS-Empfänger Signale von bis zu 12 Satelliten auf einer Frequenz unterscheiden muss.
 
 \subsection{CDMA}
 
@@ -154,7 +154,7 @@ Dort kann man sehen, dass das übertragene Signal genau dem Code entspricht, wen
 
 \subsection{Satellitencodes}
 
-Der C/A Code jedes Satelliten wird mit einem Pseudozufallsgenerator erzeugt. Das bedeutet, dass die Ausgabe zufällig aussieht, das Gerät aber bei gleichen Anfangsbedingungen auch wieder die gleiche Zufallsfolge erzeugt. Jeder GPS-Empfänger kann also den C/A-Code selbst generieren. Über zwei Parameter im Algorithmus dieses Zufallsgenerators wird ausgewählt, für welchen Satelliten der Code erzeugt werden soll. Die Codes sind so ausgewählt, dass das Unterscheiden der verschiedenen Satelliten für den Empfänger möglichst einfach ist (siehe ...).
+Der C/A Code jedes Satelliten wird mit einem Pseudozufallsgenerator erzeugt. Das bedeutet, dass die Ausgabe zufällig aussieht, das Gerät aber bei gleichen Anfangsbedingungen auch wieder die gleiche Zufallsfolge erzeugt. Jeder GPS-Empfänger kann also den C/A-Code selbst generieren. Über zwei Parameter im Algorithmus dieses Zufallsgenerators wird ausgewählt, für welchen Satelliten der Code erzeugt werden soll. Die Codes sind so ausgewählt, dass das Unterscheiden der verschiedenen Satelliten für den Empfänger möglichst einfach ist (siehe \ref{sec:correlation}).
 
 (Meine Implementierung des Zufallsgenerators in der Programmiersprache Python befindet sich im Anhang.)
 
@@ -204,7 +204,7 @@ Die Daten sind dabei in 25 Frames aufgeteilt, die wieder aus 5 Subframes bestehe
 Die Navigationsnachricht wird mit \SI{50}{\bit\per\second} übertragen.
 Ein Subframe benötigt also \SI{6}{\second} für die Übertragung, ein Frame \SI{30}{\second}. Bis die vollständige Navigationsnachricht übertragen ist, vergehen \SI{12.5}{\minute}.
 
-Das Erste Wort jedes Subframes ist das Telemetrie-Wort (TLM). Es enthält das Präambel, eine definierte Reihenfolge von 1 und 0, die ein GPS-Empfänger benutzt, um den Beginn des Subframes zu erkennen.  Darauf folgt das Hand Over Word (HOW), dass die Zeit seit Beginn der Woche zählt. Sie wird in \SI{6}{\second}-Schritten gezählt, der Länge eines Subframes. Die verbleibenden 8 Wörter eines Subframes sind dann für die eigentliche Datenübertragung.
+Das erste Wort jedes Subframes ist das Telemetrie-Wort (TLM). Es enthält das Präambel, eine definierte Reihenfolge von 1 und 0, die ein GPS-Empfänger benutzt, um den Beginn des Subframes zu erkennen.  Darauf folgt das Hand Over Word (HOW), dass die Zeit seit Beginn der Woche zählt. Sie wird in \SI{6}{\second}-Schritten gezählt, der Länge eines Subframes. Die verbleibenden 8 Wörter eines Subframes sind dann für die eigentliche Datenübertragung.
 
 \begin{figure}[H]
 \centering
@@ -219,22 +219,23 @@ GPS-Empfänger gibt es in verschiedenen Modellen. Von kleinsten Modulen, die in 
 Ein GPS-Empfänger benötigt mindestens folgende Komponenten:
 
 \paragraph{Antenne}
-In GPS-Empfängern kommen aktive Antennen zum Einsatz, die direkt an der Antenne einen Verstärker angebracht haben. Das verringert Störeinflüsse, die sonst über die Verbindung zwischen Antenne und Verstärker entstehen würden. Außerdem enthalten GPS-Empfänger noch Elektronik zum Filtern, Verstärken und demodulieren des empfangenen Signals.
+In GPS-Empfängern kommen aktive Antennen zum Einsatz, die direkt an der Antenne einen Verstärker angebracht haben. Das verringert Störeinflüsse, die sonst über die Verbindung zwischen Antenne und Verstärker entstehen würden. Außerdem enthalten GPS-Empfänger noch Elektronik zum Filtern, Verstärken und Demodulieren des empfangenen Signals.
 
 \paragraph{DSP-Chip}
-Der DSP-Chip übernimmt die zeitkritischen und anspruchsvollen Aufgaben, die zum bestimmen der Laufzeiten zu den Satelliten und daraus der Position des Empfängers notwendig sind.
+Der DSP-Chip übernimmt die zeitkritischen und anspruchsvollen Aufgaben, die zum Bestimmen der Laufzeiten zu den Satelliten und daraus der Position des Empfängers notwendig sind.
 
 \paragraph{Uhr}
 Ein GPS-Empfänger benötigt eine genaue Uhr, z.B. eine Quarz-Uhr. Sie ist zum einen der Zeitgeber für das Auswerten des GPS-Signals und sie behält die Zeit, wenn der GPS-Empfänger ausgeschaltet ist, was später einen Warmstart ermöglicht.
 
 \paragraph{Mikrocontroller}
-Weniger anspruchsvolle Berechnungen, wie z.B. das Umrechnen von Koordinaten in ein anderes Format oder die Kommunikation mit internem Speicher, Display und angeschlossenen Geräten übernimmt ein Mikrocontroller.
+Weniger anspruchsvolle Berechnungen, wie z.B. das Umrechnen von Koordinaten in ein anderes Format oder die Kommunikation mit internem Speicher, Display und angeschlossenen Geräten, übernimmt ein Mikrocontroller.
 
 \section{GPS-Fix}
 Die Aufgabe, die ein GPS-Empfänger bewältigen muss ist keine leichte.
 Denn durch die sehr kleine Sendeleistung der GPS-Satelliten und deren große Entfernung ist das GPS-Signal auf der Erde so schwach, dass es im Hintergrundrauschen „untergeht“. Zusätzlich dazu überlagern sich auch noch die Signale mehrerer Satelliten. Dementsprechend ist das Aufbereiten und Auswerten des GPS-Signals sehr kompliziert. Deshalb wird der Prozess im Nachfolgenden etwas vereinfacht dargestellt.
 
 \subsection{Autokorrelation}
+\label{sec:correlation}
 Zunächst muss der GPS-Empfänger die Zeit feststellen, zu der ein von ihm empfangenes Signal gesendet wurde. Er beginnt damit, für einen Satelliten den C/A-Code zu generieren. Diesen Code vergleicht der Empfänger dann mit dem empfangenen Signal. Der Algorithmus, der dazu verwendet wird heißt Autokorrelation.
 
 Dazu werden die empfangenen Daten und der interne C/A-Code mit einem UND verknüpft. Danach wird die Summe aus den so entstandenen Werten gebildet. Dieser Wert muss maximiert werden. Dazu verschiebt der GPS-Empfänger den generierten C/A-Code. Außerdem muss noch die Frequenz des Empfängers um $\pm \SI{6}{\kilo\hertz}$ angepasst werden. Denn die Satelliten bewegen sich zum Empfänger hin, oder von ihm weg. Wegen des Doppler-Effektes verändert sich dann die Frequenz der GPS-Signale aus Sicht des Empfängers.
@@ -269,6 +270,7 @@ Dieser Vorgang muss mit allen empfangenen Signalen durchgeführt werden.
 Nach der Autokorrelation können alle Signale empfangen werden. Der GPS-Empfänger kann dann die Nutzdaten herunterladen. In diesen Nutzdaten sind die Informationen enthalten, die der GPS-Empfänger braucht, um die aktuelle Position des GPS-Satelliten zu bestimmen. Der GPS-Empfänger bestimmt dann die Positionen der Satelliten, von denen er Signale empfängt.
 
 \subsection{Positionsbestimmung}
+\label{sec:positioning}
 Dann hat der GPS-Empfänger alle Informationen zusammen, um die eigene Position zu bestimmen. Insgesamt benötigt der GPS-Empfänger die Signale von 4 Satelliten, um eine Positionsbestimmung durchzuführen.
 
 \begin{itemize}
@@ -296,14 +298,14 @@ Diese Berechnungen werden im GPS-Empfänger normalerweise in einem kartesischen 
 
 In der Praxis kann dieses Gleichungssystem natürlich nicht einfach „gelöst“ werden. Durch Ungenauigkeiten gibt es keine exakte Lösung. Stattdessen muss der GPS-Empfänger nach der bestmöglichen Lösung suchen. Es gibt in den meisten Fällen auch zwei reele Lösungen des Gleichungssystems. Eine Lösung scheidet aber immer als unrealistisch aus, weil entweder die GPS-Systemzeit $t_0$ vor der Sendezeit liegt, oder die Position oberhalb der GPS-Satelliten ist.
 
-Außerdem würden hier noch Korrekturen für Verzerrungen durch die Erdathmosphäre durchgeführt werden. Die dafür benötigten Daten sind ebenfalls in der Navigationsnachricht enthalten.
+Außerdem würden hiery noch Korrekturen für Verzerrungen durch die Erdathmosphäre durchgeführt werden. Die dafür benötigten Daten sind ebenfalls in der Navigationsnachricht enthalten.
 
 \section{Kalt-, Warm- und Heißstart}
-Der gesamte beschriebene Vorgang wird als ein Kaltstart bezeichnet. Er muss durchgeführt werden, wenn der GPS-Empfänger gar keine Informationen über die GPS-Satelliten hat, oder diese veraltet sind. Der Kaltstart kann je nach zahl der Verfügbaren GPS-Satelliten und deren Signalstärke mehrere Minuten dauern. Bei früheren GPS-Empfängern bis zu 20 Minuten.
+Der gesamte beschriebene Vorgang wird als ein Kaltstart bezeichnet. Er muss durchgeführt werden, wenn der GPS-Empfänger gar keine Informationen über die GPS-Satelliten hat, oder diese veraltet sind. Der Kaltstart kann je nach Zahl der verfügbaren GPS-Satelliten und deren Signalstärke mehrere Minuten dauern. Bei älteren GPS-Empfängern bis zu 20 Minuten.
 
 Deshalb speichert ein GPS-Empfänger Informationen wie die letzte bekannte Position, und die Bahndaten der Satelliten, und behält diese nach dem Ausschalten. Hat sich der GPS-Empfänger seit dem Ausschalten nicht viel bewegt und die gespeicherten Informationen sind noch aktuell, kann ein Warmstart durchgeführt werden. Dann weiß der GPS-Empfänger schon im Voraus, von welchen Satelliten er Signale empfangen kann, und kennt deren ungefähre Bahndaten. Das spart bei der Autokorrelation Zeit, da weniger C/A-Codes ausprobiert werden müssen. Ein Warmstart dauert maximal 45 Sekunden.
 
-Sind noch genaue Bahninformationen vorhanden kann ein Heißstart durchgeführt werden. Dies ist dann der Fall, wenn der Empfang kurz abgerissen ist. Wenn der GPS-Empfänger sich nicht bewegt hat, sind die Daten bis zu 6 Stunden lang aktuell genug für einen Heißstart. Das bestimmen der Position dauert dann nur wenige Sekunden.
+Sind noch genaue Bahninformationen vorhanden kann ein Heißstart durchgeführt werden. Dies ist dann der Fall, wenn der Empfang kurz abgerissen ist. Wenn der GPS-Empfänger sich nicht bewegt hat, sind die Daten bis zu 6 Stunden lang aktuell genug für einen Heißstart. Das Bestimmen der Position dauert dann nur wenige Sekunden.
 
 \newpage
 \printbibliography
